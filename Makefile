@@ -6,7 +6,7 @@ setup:
 check:
 	uv run ruff check apps/api/src tests
 	uv run ruff format --check apps/api/src tests
-	uv run mypy
+	uv run mypy -p specwright
 	uv run pytest
 
 test:
