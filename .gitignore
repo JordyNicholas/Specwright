@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+dist/
+build/
+
+# Local runtime
+.env
+var/*
+!var/.gitkeep
+evals/reports/*
+!evals/reports/.gitkeep
+
+# Node (U6)
+node_modules/
+apps/web/dist/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

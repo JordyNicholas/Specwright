@@ -1,0 +1,15 @@
+# Local services — expanded in U2+ (pgvector) and U7 (deploy sketches).
+# U0: API runs via `make run` without Compose.
+
+services:
+  api:
+    profiles: ["full"]
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env
+    volumes:
+      - ../var:/app/var
