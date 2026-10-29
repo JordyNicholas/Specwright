@@ -31,4 +31,3 @@ These pages follow [Diátaxis](https://diataxis.fr/). A page is one of the four 
 ## How-to index
 
 - [Run the quality gates](how-to/run-quality-gates.md)
-- [Create the GitHub Project](how-to/create-the-github-project.md)
