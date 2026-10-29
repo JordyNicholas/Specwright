@@ -13,3 +13,5 @@ Each story in [the product backlog](backlog.md) is an issue on that board. The b
 | Epic | Docs, Wiki, Idea, Search, Charter, Graph, Evals, Screen, Cycle, Later |
 
 The Board view groups by Status. Sprint 1 is In review. Sprint 2 is Ready. Later sprints are in the product backlog. An item is Done when the [definition of done](scrum.md) is met and its pull request is merged.
+
+A pull request that uses a closing keyword (`Closes #n`) against `main` moves that story to **In review**. When the pull request merges, the story moves from **In review** to **Done**. The workflow is `.github/workflows/project-status.yml`.
