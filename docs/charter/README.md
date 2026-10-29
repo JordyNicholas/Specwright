@@ -1,13 +1,15 @@
 # Specwright Charter Pack
 
-Study-mode project bible for **Specwright**. You write all application code. Cursor acts as **teacher + project manager**.
+Working agreement for **Specwright**, the agent orchestrator described in [the product explanation](../explanation/product.md).
+
+Human docs follow Diátaxis. The map is [docs/README.md](../README.md). Product facts live in [reference](../reference/requirements.md). Decisions live in [ADRs](../adr/0001-record-architecture-decisions.md). This charter is how we build: roles, stack policy, engineering rules, documentation rules, and layout.
 
 | Doc | Purpose |
 |---|---|
-| [00-TEACHING_CONTRACT.md](00-TEACHING_CONTRACT.md) | How we work: lessons, checkpoints, reviews |
-| [01-STACK.md](01-STACK.md) | Locked tech stack and version policy |
-| [02-ENGINEERING_STANDARDS.md](02-ENGINEERING_STANDARDS.md) | Code, git, tests, prompts, evals, config |
-| [03-DOCUMENTATION_STANDARDS.md](03-DOCUMENTATION_STANDARDS.md) | README, ADRs, docstrings, learning journal |
-| [04-REPO_LAYOUT.md](04-REPO_LAYOUT.md) | Exact folder structure and ownership |
+| [00-TEACHING_CONTRACT.md](00-TEACHING_CONTRACT.md) | Roles, the study loop, and the sprint order |
+| [01-STACK.md](01-STACK.md) | Stack policy. Installed versions are in `docs/STACK_PINNED.md` |
+| [02-ENGINEERING_STANDARDS.md](02-ENGINEERING_STANDARDS.md) | Code, tests, prompts, git |
+| [03-DOCUMENTATION_STANDARDS.md](03-DOCUMENTATION_STANDARDS.md) | Diátaxis, ADRs, journal, prompt files |
+| [04-REPO_LAYOUT.md](04-REPO_LAYOUT.md) | Folder structure and which sprint touches it |
 
-**When you create the GitHub repo**, copy this entire `specwright-charter/` folder to `docs/charter/` and treat it as source of truth until an ADR changes it.
+If this pack and an ADR disagree, the newer Accepted ADR wins, and this pack is updated in the same change.

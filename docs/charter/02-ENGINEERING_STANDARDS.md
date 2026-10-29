@@ -6,7 +6,7 @@ These rules apply from commit one. Teacher reviews against this checklist.
 
 ```
 apps/api          → HTTP, wiring, lifespan
-src/specwright/    → application + domain (importable package)
+apps/api/src/specwright/ → application and domain (importable package)
   domain/         → pure models, errors (no FastAPI, no CrewAI, no LangGraph)
   application/    → use cases (orchestrate ports)
   adapters/       → LLM, vector DB, CrewAI, LangGraph, filesystem
@@ -18,7 +18,7 @@ src/specwright/    → application + domain (importable package)
 - `domain/` must not import FastAPI, LangChain, LangGraph, CrewAI, or DB drivers.  
 - Adapters implement ports (Protocols / ABCs) defined in `application/ports.py` (or `domain/ports.py`).  
 - Routers: validate → call use case → map response. No agent logic in routers.  
-- Prefer one use case per flow (`GenerateSpecPack`, `IngestCorpus`, `RunEvalSuite`).
+- Prefer one use case per flow (`CompileStage`, `AcceptPage`, `OfferHandoff`, `RunCycle`).
 
 ## 2. Naming
 
@@ -30,7 +30,7 @@ src/specwright/    → application + domain (importable package)
 | React components | `PascalCase.tsx` |
 | CSS modules | `ComponentName.module.css` |
 | Env vars | `SPECWRIGHT_` prefix (e.g. `SPECWRIGHT_OPENAI_API_KEY`) |
-| Prompts | `prompts/<name>/v<MAJOR>.md` + `meta.yaml` |
+| Prompts | `prompts/<name>/v<MAJOR>.prompt.md` plus `output.schema.json` |
 
 ## 3. Types & errors
 
@@ -52,40 +52,33 @@ src/specwright/    → application + domain (importable package)
 
 ## 6. Prompts (first-class artifacts)
 
-```
-prompts/
-  spec_normalize/
-    v1.md
-    meta.yaml    # model role, temperature, owner, changelog
-  crew_researcher/
-    v1.md
-    meta.yaml
-```
+The format is [docs/reference/prompt-format.md](../reference/prompt-format.md). Frontmatter holds the model contract. The body is CO-STAR as XML blocks. The output schema is JSON Schema.
 
-- No long system prompts buried only in Python strings (short glue OK).  
-- Bumping a prompt = new `vN` (do not silently edit prod version).  
-- Every prompt change that affects output quality requires an eval smoke run.
+- No long system prompts buried only in Python strings (short glue OK).
+- A behavior change is a new `vN.prompt.md`.
+- A prompt change that affects output quality needs an eval smoke run.
 
-## 7. RAG standards
+## 7. Search standards
 
-- Every answer that uses the KB must include **citations** (`source_id`, `chunk_id`, `span` or quote).  
-- If retrieval confidence is below threshold → **refuse** with a clear message (no invented standards).  
-- Chunking strategy documented in `docs/adr/0002-chunking.md` once chosen.  
-- Ingest is idempotent and logged (doc count, chunk count, duration).
+- An answer that uses the run folder cites the page path.
+- If no accepted page supports the answer, refuse. Do not invent a decision.
+- The index is rebuilt from the files. `_pending/` is not searchable as accepted truth.
+- Dense retrieval waits for SW-32 and ADR 0005.
 
 ## 8. Agents
 
-- **LangGraph** owns: state schema, edges, retries, HITL, persistence.  
-- **CrewAI** owns: role collaboration for drafting content inside `run_crew`.  
-- Do not invent a third orchestration framework.  
-- Tools are small, typed, and side-effect documented (read-only vs write).  
-- Agent nodes must be unit-testable with fakes (mock LLM / fake retriever).
+- **LangGraph** owns state, edges, retries, pause, and the checkpoint. See [ADR 0003](../adr/0003-orchestration.md).
+- **LangChain** owns model calls and tools, inside the adapter.
+- **CrewAI** owns role conversation inside one graph node and returns one pending page.
+- Do not add a fourth orchestrator.
+- Tools are small, typed, and marked read or write. Agents do not receive accept, merge, or story append.
+- Agent nodes are unit-tested with a fake model.
 
 ## 9. Evals
 
 - Golden cases live in `evals/cases/*.jsonl` (one concern per file OK).  
 - Scorers in `evals/scorers/`; reports in `evals/reports/` (gitignored except a sample).  
-- Minimum metrics for a “green” generate run: schema valid, ≥1 citation when KB hit expected, refusal when empty KB.  
+- Minimum metrics for a green run once evals exist: schema valid, a page path when a hit is expected, refusal when no accepted page applies, requirement ids still present (R12).  
 - Never delete a failing case to go green — fix code or mark `xfail` with reason.
 
 ## 10. Logging & tracing
@@ -99,7 +92,7 @@ prompts/
 | Layer | What |
 |---|---|
 | Unit | domain + pure functions; fake ports |
-| Component | RAG retrieve with fixture corpus |
+| Component | Search over a fixture run folder |
 | Contract | API OpenAPI / schema snapshots where useful |
 | Eval | separate from unit; `make eval` (may cost $) |
 
@@ -122,7 +115,7 @@ make check      # ruff + mypy + eslint + unit tests
 make test       # pytest (no paid LLM)
 make eval       # eval suite
 make run        # api + web via compose or local
-make ingest     # rebuild vector index from data/kb
+make ingest     # rebuild the full-text index from a run folder (Sprint 4)
 ```
 
 ## 14. Code style (Python)

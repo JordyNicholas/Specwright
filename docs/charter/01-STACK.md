@@ -1,104 +1,89 @@
-# Specwright — Locked Stack
+# Specwright — Stack policy
 
-Decisions below are **defaults**. Change only via an ADR in `docs/adr/`.
+Defaults below match [ADR 0003](../adr/0003-orchestration.md) and [ADR 0005](../adr/0005-search-and-deferrals.md). Change them only with a newer ADR. Exact installed versions live in [docs/STACK_PINNED.md](../STACK_PINNED.md). Do not add a library until the sprint that imports it.
 
-## Runtime & package managers
+## Runtime
 
 | Layer | Choice | Notes |
 |---|---|---|
-| Language (AI/API) | **Python 3.12** | CrewAI supports ≤3.13; pin 3.12 for stability |
-| Language (UI) | **TypeScript 5.x** on **Node 22 LTS** | Matches your React experience |
-| Python packages | **uv** + `pyproject.toml` + lockfile | Reproducible; faster than raw pip |
-| Node packages | **pnpm** + lockfile | Strict, fast; commit the lockfile |
-| Containers | **Docker** + **Docker Compose** | One-command local demo |
-| Make | **Makefile** at repo root | Standard entrypoints: `make setup check test eval run` |
+| Language (API) | Python 3.12 | Pin 3.12 |
+| Language (UI) | TypeScript on Node 22 LTS | Screen is Sprint 8 |
+| Python packages | uv, `pyproject.toml`, lockfile | One package, `specwright` |
+| Node packages | pnpm | Only when the web app exists |
+| Make | Root `Makefile` | `setup`, `check`, `test`, `run`, `eval`, `ingest` |
 
-## Backend / AI
+## Backend and agents
 
 | Concern | Choice |
 |---|---|
-| HTTP API | **FastAPI** + **Uvicorn** |
-| Validation / settings | **Pydantic v2** + **pydantic-settings** |
-| Orchestration | **LangGraph** (supervisor, state, HITL, checkpoints) |
-| Multi-agent collaboration | **CrewAI** (invoked *inside* one LangGraph node) |
-| LLM plumbing / tools | **LangChain** + **langchain-core** (+ provider packs) |
-| Embeddings / chat (dev default) | **OpenAI** API via `langchain-openai` |
-| Alternate providers | Interface `LLMProvider`; adapters later: Anthropic, Bedrock, Ollama |
-| Vector store (local) | **Chroma** |
-| Vector store (Compose/prod-shaped) | **pgvector** on **PostgreSQL 16** |
-| Keyword / hybrid search | **BM25** (e.g. `rank_bm25`) + dense; merge + optional rerank |
-| Rerank (optional MVP+) | Cross-encoder or provider rerank — behind a flag |
-| Checkpointing | LangGraph **SqliteSaver** (local) → Postgres checkpointer later |
-| Tracing | **LangSmith** (optional key) + structured logs always |
-| HTTP client | **httpx** |
-| CLI | **Typer** (e.g. `sw ask`, `sw ingest`, `sw eval`) |
+| HTTP API | FastAPI and Uvicorn |
+| Validation and settings | Pydantic v2 and pydantic-settings |
+| Orchestration | LangGraph: supervisor node, state, pause, SQLite checkpoint |
+| Model and tools | LangChain (`langchain-core` and a provider package). Domain code does not import it |
+| Chat, dev default | OpenAI via `langchain-openai`, model name from settings |
+| Other providers | Adapter behind the LLM port: Anthropic, Bedrock, Ollama |
+| Stage conversation | CrewAI inside one LangGraph node. It returns one pending page |
+| Project record | Markdown and YAML in the run folder |
+| Search | Full text over that folder. Refuse when nothing matches |
+| Checkpoint | LangGraph SqliteSaver locally |
+| Tracing | Structured logs always. LangSmith optional |
+| CLI | Typer |
 
-### Version policy (Python AI libs)
+### Deferred
 
-Ecosystem moves fast. Do **not** hardcode patch versions in this charter forever.
+Chroma, pgvector, hybrid dense retrieval, harness hooks, fused ranking, and an external memory MCP adapter. See ADR 0005. They are not installed in Sprint 1.
 
-At scaffold time (U0):
+### Version policy
 
-1. Create the project with `uv`.  
-2. Add dependencies **without** floating majors beyond what you install that day.  
-3. Commit `uv.lock`.  
-4. Record exact resolved versions in `docs/STACK_PINNED.md` (generated once per lock refresh).
+At the sprint that adds a library: add it with uv, commit `uv.lock`, and refresh `docs/STACK_PINNED.md`. Do not float majors mid-sprint.
 
-**Baseline families to target when installing (verify on PyPI that day):**
+Families to target when that sprint arrives, checked on PyPI that day:
 
-- `langgraph` 1.2.x  
-- `langchain` / `langchain-core` 1.x  
-- `crewai` 1.15.x (or current 1.x stable)  
-- `fastapi` 0.115+ / current stable  
-- `pydantic` 2.x  
-
-Refresh lockfiles intentionally (lesson or ADR), not mid-feature.
+- `langgraph` 1.2.x
+- `langchain` and `langchain-core` 1.x
+- `crewai` current 1.x stable
+- `fastapi` current stable already in the lockfile
+- `pydantic` 2.x already in the lockfile
 
 ## Frontend
 
 | Concern | Choice |
 |---|---|
-| Bundler | **Vite** |
-| UI library | **React 19** (or current stable 18+ if 19 friction) |
-| Styling | **CSS modules** + CSS variables (no UI kit required for MVP) |
-| Data fetching | **TanStack Query** for `/assist` calls |
-| Lint/format | **ESLint** + **Prettier** |
+| Bundler | Vite |
+| UI | React 19, or stable 18 if 19 blocks the sprint |
+| Styling | CSS modules and CSS variables |
+| Data | TanStack Query for the run endpoints |
+| Lint | ESLint and Prettier |
 
-Keep the UI thin: one demo screen. No design-system sprawl in study mode.
+One screen. It shows the story, the pending page, accept, and the handoff holder.
 
-## Tooling (quality gates)
-
-| Concern | Choice |
-|---|---|
-| Python lint/format | **Ruff** (format + lint) |
-| Python types | **mypy** (strict for `apps/api/src`) |
-| Python tests | **pytest** + **pytest-asyncio** |
-| Coverage (soft) | **pytest-cov**; gate later if useful |
-| Pre-commit | **pre-commit** hooks: ruff, mypy (api), eslint, prettier |
-| CI | **GitHub Actions**: `make check` on PR/main |
-
-## Cloud & secrets (from U7)
+## Quality
 
 | Concern | Choice |
 |---|---|
-| Primary cloud | **AWS** (leverage your CCP) |
-| Secrets | `.env` local (never committed); AWS SSM/Secrets Manager in deploy |
-| Observability MVP | Structured JSON logs + LangSmith; CloudWatch when on AWS |
+| Python lint and format | Ruff |
+| Types | mypy strict on `apps/api/src` |
+| Tests | pytest and pytest-asyncio |
+| CI | GitHub Actions runs `make check` |
 
-## Explicit non-goals (stack)
+## Secrets
 
-- No NestJS / Spring in Specwright (keep AI path in Python).  
-- No microservices split in study mode (one API process).  
-- No fine-tuning in the critical path (notebook stretch only).  
-- No Flux / fiscal / Pix domain code.
+`.env` is local and never committed. The example file lists every variable.
 
-## Model defaults (study budget)
+## Non-goals
 
-| Role | Default | Rationale |
+- Specwright is not itself a model.
+- No second orchestration framework beside LangGraph.
+- No microservices in the study build.
+- No fine-tuning on the critical path.
+- The user is not taught Git in order to read a run.
+
+## Model defaults
+
+| Role | Default | Why |
 |---|---|---|
-| Classifier / router | Small/cheap chat model | Cost |
-| Main synthesis | Stronger chat model | Quality for SpecPack |
-| Embeddings | `text-embedding-3-small` (or current OpenAI small) | Cost/quality |
-| Local free path | **Ollama** adapter (optional lesson) | Practice offline on your GPU laptop |
+| Orchestrator and classifiers | Small chat model | Cost. Temperature in the prompt file |
+| Drafts that must keep ids and paths | Stronger chat model, temperature 0 | Residue |
+| Embeddings | Not used until SW-32 | Full text comes first |
 
-Always read model names from config — never hardcode in business logic.
+Read model names from settings.

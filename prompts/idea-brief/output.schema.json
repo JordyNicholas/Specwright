@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specwright://prompts/idea-brief/output.schema.json",
+  "title": "IdeaBrief",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["problem", "audience", "current_practice", "outcome", "non_goals"],
+  "properties": {
+    "problem": { "type": "string", "minLength": 1 },
+    "audience": { "type": "string", "minLength": 1 },
+    "current_practice": { "type": "string", "minLength": 1 },
+    "outcome": { "type": "string", "minLength": 1 },
+    "non_goals": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
