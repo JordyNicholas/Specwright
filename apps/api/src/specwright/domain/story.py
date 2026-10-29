@@ -8,8 +8,3 @@ def story_paragraph(decision: str, recommendation: str, page: Path, root: Path) 
         sentences.append(f"The draft had recommended: {recommendation}")
     sentences.append(f"Page: {location}.")
     return " ".join(sentences) + "\n"
-
-
-def append_story(self, root: Path, paragraph: str) -> None:
-    """Append one paragraph to history/story.md."""
-    ...
