@@ -44,6 +44,7 @@ python_version = "3.12"
 strict = true
 packages = ["specwright"]
 mypy_path = "apps/api/src"
+sqlite_cache = false
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
