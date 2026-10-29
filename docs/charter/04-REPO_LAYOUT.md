@@ -1,6 +1,6 @@
 # Repo Layout — Specwright
 
-Create the GitHub repo as **`specwright`** (public). Final tree:
+The GitHub repository is **`specwright`**. Tree:
 
 ```text
 specwright/
@@ -15,17 +15,25 @@ specwright/
 │   └── workflows/
 │       └── ci.yml
 ├── docs/
+│   ├── README.md                # Diátaxis map
+│   ├── tutorials/
+│   ├── how-to/
+│   ├── reference/
+│   ├── explanation/
 │   ├── ARCHITECTURE.md
 │   ├── STACK_PINNED.md
 │   ├── adr/
 │   │   ├── 0001-record-architecture-decisions.md
-│   │   ├── 0002-langgraph-and-crewai-boundary.md
-│   │   └── 0003-hybrid-rag.md
+│   │   ├── 0002-product-pass.md
+│   │   ├── 0003-orchestration.md
+│   │   ├── 0004-wiki-and-story.md
+│   │   ├── 0005-search-and-deferrals.md
+│   │   └── 0006-documentation-patterns.md
 │   ├── charter/                 # copy of this pack
 │   └── journal/
 ├── apps/
 │   ├── api/
-│   │   ├── pyproject.toml       # or workspace root pyproject — pick one in U0
+│   │   ├── pyproject.toml       # unused; the package is the root pyproject.toml
 │   │   ├── Dockerfile
 │   │   └── src/
 │   │       └── specwright/
@@ -42,12 +50,15 @@ specwright/
 │       └── src/
 │           ├── main.tsx
 │           ├── App.tsx
-│           └── features/assist/
+│           └── features/run/    # Sprint 8
 ├── packages/                    # optional; start without if simpler
 │   └── schemas/                 # only if sharing JSON schema with web
 ├── prompts/
+│   └── <name>/
+│       ├── v1.prompt.md
+│       └── output.schema.json
 ├── data/
-│   └── kb/                      # markdown knowledge base (synthetic)
+│   └── kb/                      # unused until a story needs a sample corpus
 ├── evals/
 │   ├── cases/
 │   ├── scorers/
@@ -55,25 +66,26 @@ specwright/
 ├── notebooks/                   # stretch only
 ├── infra/
 │   ├── docker-compose.yml
-│   └── aws/                     # U7 sketches
+│   └── aws/                     # not part of the product goal
 ├── tests/
 │   ├── unit/
 │   └── component/
 └── var/                         # local traces, sqlite checkpoints — gitignored
 ```
 
-## Ownership by unit
+## Ownership by sprint
 
 | Path | First touched in |
 |---|---|
-| tooling, Makefile, empty package | U0 |
-| `domain/`, `prompts/` | U1 |
-| `adapters/rag/`, `data/kb/` | U2 |
-| `adapters/crew/` | U3 |
-| `adapters/graph/` | U4 |
-| `evals/` | U5 (skeleton can start U1) |
-| `apps/web/` | U6 |
-| `infra/aws/` | U7 |
+| Tooling, Makefile, health check | U0, done |
+| Docs quadrants, ADRs, prompt contracts | Sprint 1 |
+| `domain/`, `adapters/wiki/` | Sprint 2 |
+| Idea-brief wiring | Sprint 3 |
+| `adapters/search/` | Sprint 4 |
+| Charter checks, `adapters/crew/` for brainstorm | Sprint 5, crew conversation may slip to SW-30 |
+| `adapters/graph/` | Sprint 6 |
+| `evals/` | Sprint 7 |
+| `apps/web/` | Sprint 8 |
 
 ## Python packaging choice (locked)
 
@@ -83,8 +95,8 @@ specwright/
 - `apps/web` remains separate (pnpm).  
 - Avoid multiple Python packages until you need them.
 
-## Knowledge base rules
+## Run folder
 
-- Synthetic, license-clean Markdown only.  
-- Filename pattern: `data/kb/<area>/<slug>.md` with YAML front matter (`id`, `title`, `tags`).  
-- No scraped copyrighted manuals.
+A run writes a separate folder. It is not this repository. See [the pipeline](../reference/pipeline.md).
+
+Fixture folders used by tests stay small, license-clean, and free of scraped manuals. `data/kb/` is unused until a story needs a sample corpus. Search for the product goal reads the run folder, not `data/kb/`.

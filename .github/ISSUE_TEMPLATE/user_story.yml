@@ -1,0 +1,28 @@
+---
+name: User story
+description: One product-backlog item
+title: "SW-00: "
+labels: []
+body:
+  - type: input
+    id: backlog_id
+    attributes:
+      label: Backlog id
+      description: Copy from docs/reference/backlog.md. Do not invent a second story.
+      placeholder: SW-07
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: User story and acceptance criteria
+      description: Paste the story sentence and the acceptance cell from the backlog.
+    validations:
+      required: true
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement ids
+      placeholder: R3, R4
+    validations:
+      required: true

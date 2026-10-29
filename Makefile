@@ -16,7 +16,7 @@ run:
 	uv run uvicorn specwright.main:app --reload --host 127.0.0.1 --port 8000
 
 ingest:
-	@echo "Ingest is implemented in U2."
+	@echo "Full-text indexing of a run folder is Sprint 4 (SW-14)."
 
 eval:
-	@echo "Eval suite is implemented in U5."
+	@echo "The eval suite is Sprint 7 (SW-23)."

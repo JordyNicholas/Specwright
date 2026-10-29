@@ -1,16 +1,23 @@
 # Specwright
 
-Multi-agent system that turns messy product intent into a **cited engineering SpecPack** (requirements, architecture options, risks, implementation outline).
+Specwright is not a language model. It is a tool that orchestrates AI agents through a software project: from an idea prompt, through a proposal, an architecture, requirements, and a team charter you accept, to a project folder and one development cycle.
 
-Study / portfolio project for AI Engineering (LangGraph, CrewAI, RAG, evals, LLMOps). Curriculum is teacher-managed; see `docs/charter/`.
+The folder is readable without Git. Agents draft. You accept. LangGraph orders the work. LangChain calls the model. A CrewAI crew may talk inside one stage.
 
-## Status
+**Status:** the scaffold is in place (`/health` only). The product pass is specified and not built yet. The ordered work is the [product backlog](docs/reference/backlog.md).
 
-**U0 — scaffold.** Tooling and `/health` only. Agents and RAG land in later units.
+## Documentation
 
-## Quickstart
+Human-facing docs follow [Diátaxis](https://diataxis.fr/). Start at the [docs map](docs/README.md).
 
-Prerequisites: Python 3.12, [uv](https://docs.astral.sh/uv/), Make (WSL/Linux/macOS).
+| If you need to | Go to |
+|---|---|
+| Learn by doing | [Tutorial: run the scaffold](docs/tutorials/run-the-scaffold.md) |
+| Complete a task | [How-to guides](docs/how-to/run-quality-gates.md) |
+| Look up a fact | [Reference](docs/reference/requirements.md) |
+| Understand why | [Explanation](docs/explanation/product.md) |
+
+## Run the scaffold
 
 ```bash
 make setup
@@ -18,21 +25,8 @@ make check
 make run
 ```
 
-Then open `http://127.0.0.1:8000/health` → `{"status":"ok"}`.
-
-## Skills demonstrated (roadmap)
-
-| Skill | Unit |
-|---|---|
-| Project layout, FastAPI, quality gates | U0 (this) |
-| Domain schemas, prompt registry | U1 |
-| Hybrid RAG + citations | U2 |
-| CrewAI multi-agent crew | U3 |
-| LangGraph supervisor + HITL | U4 |
-| Evals, tracing, guardrails | U5 |
-| React demo UI | U6 |
-| AWS deploy + portfolio narrative | U7 |
+Open `http://127.0.0.1:8000/health`. The lesson with expected output is the [tutorial](docs/tutorials/run-the-scaffold.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

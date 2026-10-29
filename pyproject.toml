@@ -1,7 +1,7 @@
 [project]
 name = "specwright"
 version = "0.1.0"
-description = "Multi-agent engineering SpecPack generator — AI Engineering study portfolio"
+description = "Orchestrates AI agents through a software project, from an idea prompt to one development cycle"
 readme = "README.md"
 authors = [
     { name = "Jordy Nicholas", email = "JordyNCdaSilva@live.com" }

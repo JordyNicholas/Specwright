@@ -4,56 +4,43 @@
 
 | Role | Who | Does |
 |---|---|---|
-| Student / implementer | You (Jordy) | All application code, tests, commits, deploys |
-| Teacher / PM | Cursor (this agent) | Curriculum, standards, reviews, sequencing, unblocking |
+| Product owner and implementer | Jordy | Orders the backlog, accepts increments, writes application code, tests, and commits |
+| Teacher | Cursor, in review | Checks the increment against the definition of done and the charter. Does not add sprint scope |
 
-I will **not** implement Specwright features for you unless you explicitly ask for a *worked mini-example* of one pattern (≤ ~40 lines), after you have attempted it.
+Application features are implemented by Jordy. A documentation retarget or a worked example is in scope when the request says to write it.
 
-**Default for “help / setup / how do I …” requests:** answer as a **how-to blueprint** (steps, commands to try, acceptance checks). Do **not** clone, scaffold, commit, or push to the student’s repo unless they clearly say e.g. “implement this for me” or “do it in the repo.”
+The product is an orchestrator of agents, not a language model. The pass and the requirements are [reference](../reference/requirements.md). The sprint order is [the backlog](../reference/backlog.md).
 
-## Operating loop (every lesson)
+## Operating loop
 
-1. **Brief** — I state learning goals, constraints, acceptance criteria, and which charter rules apply.
-2. **You build** — in your own repo/branch; ask questions anytime.
-3. **You report** — push (or paste) what changed: files touched, commands run, what broke, what you learned.
-4. **Review** — I review against standards + acceptance criteria; pass / revise / deepen.
-5. **Checkpoint** — only then unlock the next lesson.
+The Scrum agreement is [docs/reference/scrum.md](../reference/scrum.md). In study terms:
 
-Skip-ahead is allowed only if you demonstrate the prior checkpoint’s acceptance criteria.
+1. The sprint goal and its ready stories are the brief.
+2. You build them.
+3. You report what changed, what broke, and what you learned.
+4. Review is against the definition of done and the story's acceptance criteria.
+5. The next sprint is pulled only after this one is done.
 
-## Lesson units (curriculum map)
+## Sprint order
 
-| Unit | Theme | Unlock condition |
+U0, the scaffold, is done. Sprints replace the old U1–U7 SpecPack curriculum.
+
+| Sprint | Goal | Status |
 |---|---|---|
-| U0 | Repo scaffold + tooling matches charter | `make check` green on empty/hello app |
-| U1 | Domain schemas + prompt registry | Schemas + 1 versioned prompt + tests |
-| U2 | RAG baseline (ingest → retrieve → cite/refuse) | CLI ask works + refusal test |
-| U3 | CrewAI crew (4 roles + tools) | Crew produces partial SpecPack |
-| U4 | LangGraph supervisor + HITL | Graph runs crew node + pause/resume |
-| U5 | Evals + tracing + guardrails | Eval report + traces for 1 run |
-| U6 | API + React demo UI | End-to-end happy path in browser |
-| U7 | AWS deploy + portfolio narrative | Public URL + README skills matrix |
+| 1 | Docs, ADRs, prompt contracts, backlog | In review |
+| 2 | Accept a page and append the story, no model | Ready |
+| 3 | Idea brief with a fake model | Backlog |
+| 4 | Search cites or refuses | Backlog |
+| 5 | Charter and named handoff | Backlog |
+| 6 | Founding graph pauses and resumes | Backlog |
+| 7 | Evals for traceability, residue, contradiction | Backlog |
+| 8 | One screen for the story and accept | Backlog |
+| 9 | Project folder and one cycle | Backlog |
 
-Stretch (U8+): Bedrock provider, multimodal, fine-tune notebook — only after U7.
+## Definition of done
 
-## How to ask for help (efficient)
+The [Scrum definition of done](../reference/scrum.md) applies. A study sprint also adds `docs/journal/S<n>-short-name.md` using the journal headings. U0 keeps its original filename.
 
-Prefer:
+## Language
 
-- “I’m stuck on X; here’s the error, file path, and what I already tried.”
-- “Review this design before I code.”
-- “Quiz me on why we chose Y.”
-
-Avoid: “Just write the whole module for me.”
-
-## Definition of Done (any lesson)
-
-- Meets that lesson’s acceptance criteria  
-- Passes `make check` (lint + typecheck + unit tests)  
-- Docs updated if public behavior or architecture changed (see doc standards)  
-- Learning journal entry for the unit (`docs/journal/Uxx.md`)  
-
-## Language for lessons
-
-Default: **English** for code, commits, ADRs, and README (portfolio / AI Eng roles).  
-Portuguese is fine in the learning journal and in conversation.
+English for code, commits, ADRs, reference, and README. Portuguese is fine in the journal and in conversation.

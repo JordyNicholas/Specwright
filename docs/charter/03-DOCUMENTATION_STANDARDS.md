@@ -1,42 +1,36 @@
 # Documentation Standards — Specwright
 
-Documentation is part of the curriculum. AI Engineering roles expect you to explain systems, not only ship demos.
+Human pages follow [Diátaxis](https://diataxis.fr/). The map is [docs/README.md](../README.md). The decision is [ADR 0006](../adr/0006-documentation-patterns.md).
 
-## 1. Required docs (always present)
+A page is a tutorial, a how-to, a reference, or an explanation. It is not two of those. The README links to them. It does not copy them.
 
-| Path | Purpose |
-|---|---|
-| `README.md` | What / why / quickstart / skills matrix / demo GIF or screenshots |
-| `docs/charter/` | Copy of this charter pack (source of truth) |
-| `docs/adr/` | Architecture Decision Records |
-| `docs/journal/` | Per-unit learning journal |
-| `docs/ARCHITECTURE.md` | Current system diagram + request lifecycle |
-| `docs/STACK_PINNED.md` | Exact lockfile versions after U0 |
-| `.env.example` | All env vars with comments |
-| `CHANGELOG.md` | User-visible changes (Keep a Changelog style) |
+## 1. Required docs
 
-## 2. README structure (fixed outline)
+| Path | Type | Purpose |
+|---|---|---|
+| `README.md` | Map | Pitch, status, links, license |
+| `docs/tutorials/` | Tutorial | A lesson with expected output |
+| `docs/how-to/` | How-to | A task the reader already understands |
+| `docs/reference/` | Reference | Requirements, pipeline, stack, backlog, prompt contract |
+| `docs/explanation/` | Explanation | Why the product and the design are shaped this way |
+| `docs/charter/` | Agreement | How we build |
+| `docs/adr/` | Decision | ADRs |
+| `docs/journal/` | Journal | What the builder learned. Not one of the four types |
+| `docs/ARCHITECTURE.md` | Reference | Current and target shape |
+| `docs/STACK_PINNED.md` | Reference | Versions actually installed |
+| `.env.example` | Reference | Every variable, commented |
+| `CHANGELOG.md` | Reference | User-visible changes, Keep a Changelog |
 
-1. One-paragraph pitch  
-2. Skills demonstrated (checklist mapped to GenAI tracks)  
-3. Architecture diagram (mermaid)  
-4. Quickstart (`make setup && make run`)  
-5. Example SpecPack (short)  
-6. Eval summary table (link to latest committed sample report)  
-7. Project structure  
-8. Roadmap / curriculum units  
-9. License (MIT recommended for portfolio)
+## 2. ADR format
 
-## 3. ADR format
-
-File: `docs/adr/NNNN-title.md` (monotonic).
+File: `docs/adr/NNNN-title.md`.
 
 ```markdown
 # NNNN. Title
 
 Date: YYYY-MM-DD
 Status: Proposed | Accepted | Superseded by NNNN
-Unit: Ux
+Sprint: Sn
 
 ## Context
 ## Decision
@@ -44,20 +38,14 @@ Unit: Ux
 ## Alternatives considered
 ```
 
-**ADR triggers** (must write one before coding the change):
+Write an ADR before the code for a new major dependency, a change to the LangGraph, LangChain, or CrewAI boundary, a change to search, a provider default, or a documentation-pattern change.
 
-- New major dependency  
-- Change to LangGraph vs CrewAI boundary  
-- Chunking / retrieval strategy  
-- Provider default change  
-- Deploy topology change  
+## 3. Journal
 
-## 4. Learning journal
-
-File: `docs/journal/U0X-short-name.md`
+File: `docs/journal/S<n>-short-name.md`. U0 keeps `U0-scaffold.md`.
 
 ```markdown
-# U0X — Title
+# Title
 
 ## Goals
 ## What I built
@@ -67,42 +55,23 @@ File: `docs/journal/U0X-short-name.md`
 ## Teacher review notes
 ```
 
-Portuguese OK here. Keep it honest — this is study material, not marketing.
+Portuguese is fine here.
 
-## 5. Code documentation
+## 4. Prompts
 
-- **Modules**: one-liner at top if non-obvious.  
-- **Public functions/classes**: Google-style or Sphinx docstrings stating Args / Returns / Raises.  
-- **Do not** narrate obvious code (`i += 1  # increment i`).  
-- Complex graph nodes: docstring must state inputs from state, side effects, failure modes.
+Agent-facing files are `prompts/<name>/v<MAJOR>.prompt.md` plus `output.schema.json`. The contract is [the prompt format](../reference/prompt-format.md). JSON Schema, not a second Zod file.
 
-## 6. API docs
+## 5. Code and API docs
 
-- FastAPI auto OpenAPI is the contract.  
-- Tag routes; set `response_model`.  
-- Breaking response changes bump API version path (`/v1/...`) once you leave study MVP, or document as breaking in CHANGELOG.
+- Modules: one line at the top when the purpose is not obvious.
+- Public functions: docstrings with Args, Returns, and Raises.
+- Graph nodes: inputs from state, side effects, and failure modes.
+- FastAPI OpenAPI is the HTTP contract. Tag routes and set `response_model`.
 
-## 7. Prompt docs
+## 6. Diagrams
 
-Each `prompts/<name>/meta.yaml` must include:
+Mermaid in reference and ADRs. Update the diagram when graph nodes change.
 
-```yaml
-name: spec_normalize
-version: 1
-owner: jordy
-model_role: classifier  # classifier | synthesizer | judge
-temperature: 0.0
-changelog: "Initial normalize prompt"
-eval_cases: ["evals/cases/normalize.jsonl"]
-```
+## 7. Language
 
-## 8. Diagrams
-
-- Use **mermaid** in Markdown (ARCHITECTURE, ADRs, README).  
-- Keep diagrams updated when graph nodes change (part of DoD for U4+).
-
-## 9. Language & tone
-
-- Repo English (README, ADRs, code comments aimed at employers).  
-- Precise over hype (“hybrid RAG with citations” not “revolutionary AI”).  
-- Never claim skills you did not implement.
+English in README, ADRs, reference, and code comments. Precise. Do not claim a sprint that is not merged.

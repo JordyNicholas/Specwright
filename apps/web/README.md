@@ -1,5 +1,5 @@
-# Specwright web (U6)
+# Specwright web
 
-React + Vite + TypeScript demo UI lands in **unit U6**.
+The screen is Sprint 8 ([SW-26](../../docs/reference/backlog.md)).
 
-This folder is a placeholder so the repo layout matches the charter.
+It will show the story, the pending page, accept, and who holds the handoff. This folder stays empty until that sprint.

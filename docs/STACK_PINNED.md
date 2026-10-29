@@ -13,3 +13,7 @@ Generated after `uv lock` / `uv sync` on 2026-09-22.
 See `uv.lock` for full transitive pins. Top-level runtime: FastAPI, Uvicorn, Pydantic, pydantic-settings. Dev: ruff, **mypy 1.x** (`<2` — mypy 2.x hit INTERNAL ERROR on some WSL setups), pytest, pytest-asyncio, httpx.
 
 Refresh this file whenever you intentionally refresh `uv.lock`.
+
+## Not installed yet
+
+LangGraph, LangChain, a provider package, and CrewAI are target libraries. They are added in the sprint that first imports them. See [the stack reference](reference/stack.md). Do not treat this file as permission to add them early.

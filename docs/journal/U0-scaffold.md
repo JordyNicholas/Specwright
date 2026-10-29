@@ -1,5 +1,7 @@
 # U0 — Scaffold
 
+Historical record. On 2026-10-29 the product goal became the full project pass. This entry stays as the record of the scaffold. See `docs/explanation/product.md`.
+
 ## Goals
 
 - Establish repo layout and quality tooling (`make check`).

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "specwright://prompts/brainstorm/output.schema.json",
+  "title": "OptionsMemo",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["options"],
+  "properties": {
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "summary",
+          "existing_alternatives",
+          "real_world_use",
+          "disposition",
+          "reason"
+        ],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "existing_alternatives": { "type": "string", "minLength": 1 },
+          "real_world_use": { "type": "string", "minLength": 1 },
+          "disposition": { "enum": ["keep", "discard"] },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
