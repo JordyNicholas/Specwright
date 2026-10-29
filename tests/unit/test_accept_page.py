@@ -44,7 +44,7 @@ def test_same_decision_and_recommendation(tmp_path: Path) -> None:
     assert accepted == tmp_path / "concepts" / "brief.md"
     story = (tmp_path / "history" / "story.md").read_text(encoding="utf-8")
     assert "You decided: the same." in story
-    assert "The draft had recommended: the recommendation." not in story
+    assert "had recommended" not in story
     assert "Page: concepts/brief.md" in story
     assert accepted.read_text(encoding="utf-8") == "problem: the brief\n"
     assert not source.exists()

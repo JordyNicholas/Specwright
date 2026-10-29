@@ -10,4 +10,4 @@ def accept_page(
 ) -> Path:
     accepted = wiki.accept(root, page_name, family)
     wiki.append_story(root, story_paragraph(decision, recommendation, accepted, root))
-    return wiki.accept(root, page_name, family)
+    return accepted

@@ -10,7 +10,5 @@ class Wiki(Protocol):
         ...
 
     def append_story(self, root: Path, paragraph: str) -> None:
-        story = root / "history" / "story.md"
-        story.parent.mkdir(parents=True, exist_ok=True)
-        with story.open("a", encoding="utf-8") as handle:
-            handle.write(paragraph)
+        """Append one paragraph to history/story.md"""
+        ...
