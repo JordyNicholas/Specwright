@@ -1,30 +1,15 @@
 # GitHub Project
 
-The board is the Scrum view of [the product backlog](backlog.md). Creating it is a [how-to](../how-to/create-the-github-project.md). The backlog remains the wording. The board does not get a parallel description of the work.
+The board is [SpecWright](https://github.com/users/JordyNicholas/projects/8).
 
-## Project
+Each story in [the product backlog](backlog.md) is an issue on that board. The backlog wording is the source of truth.
 
-| Field | Value |
-|---|---|
-| Title | Specwright |
-| Repository | `jordynicholas/specwright` |
-| Views | Board by Status, Table by Sprint, Roadmap by Sprint |
-
-## Fields
-
-| Field | Options |
+| Field | Meaning |
 |---|---|
 | Status | Product backlog, Ready, In progress, In review, Done |
-| Sprint | Sprint 1 … Sprint 9, or Unscheduled |
+| Sprint | Sprint 1 through Sprint 9, or Unscheduled |
 | Priority | Must, Should, Could |
-| Requirement | R1 … R14, or none |
+| Requirement | The requirement ids the story proves |
 | Epic | Docs, Wiki, Idea, Search, Charter, Graph, Evals, Screen, Cycle, Later |
 
-## How items move
-
-1. New work lands in **Product backlog** with the backlog id.
-2. Planning moves a ready story to **Ready**.
-3. Implementation moves it to **In progress**, then **In review** when the pull request is open.
-4. **Done** requires the [definition of done](scrum.md) and a merged pull request.
-
-Sprint 1 rows are **In review** for the documentation pull request. All **Must** rows below Sprint 1 stay in **Product backlog** except Sprint 2, which is **Ready**.
+The Board view groups by Status. Sprint 1 is In review. Sprint 2 is Ready. Later sprints are in the product backlog. An item is Done when the [definition of done](scrum.md) is met and its pull request is merged.
