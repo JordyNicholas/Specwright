@@ -1,13 +1,10 @@
+"""Accepting a page files it under its family and removes the pending copy."""
+
 from pathlib import Path
 
 from specwright.adapters.wiki.filesystem import FileWiki
 from specwright.application.accept_page import accept_page
 from specwright.domain.page import PageFamily
-
-"""Test to validate:
-    - accept_page moves a page from pending to the correct family folder
-    - the content of the page is preserved
-"""
 
 
 def test_accept_page(tmp_path: Path) -> None:
